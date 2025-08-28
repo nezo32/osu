@@ -159,6 +159,8 @@ namespace osu.Game.Screens.Play
 
         protected ScoreProcessor ScoreProcessor { get; private set; }
 
+        public ScoreProcessor PublicScoreProcessor => ScoreProcessor;
+
         protected HealthProcessor HealthProcessor { get; private set; }
 
         protected DrawableRuleset DrawableRuleset { get; private set; }
@@ -168,6 +170,8 @@ namespace osu.Game.Screens.Play
         public bool LoadedBeatmapSuccessfully => DrawableRuleset?.Objects.Any() == true;
 
         protected GameplayClockContainer GameplayClockContainer { get; private set; }
+
+        public GameplayClockContainer PublicGameplayClockContainer => GameplayClockContainer;
 
         public DimmableStoryboard DimmableStoryboard { get; private set; }
 

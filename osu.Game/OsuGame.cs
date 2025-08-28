@@ -192,6 +192,8 @@ namespace osu.Game
         /// </summary>
         private readonly IBindable<bool> backButtonVisibility = new BindableBool();
 
+        public ScreenStack PublicScreenStack => ScreenStack;
+
         IBindable<LocalUserPlayingState> ILocalUserPlayInfo.PlayingState => UserPlayingState;
 
         protected readonly Bindable<LocalUserPlayingState> UserPlayingState = new Bindable<LocalUserPlayingState>();
@@ -1028,6 +1030,9 @@ namespace osu.Game
 
             base.Dispose(isDisposing);
 
+            try { telemetrySampler?.Dispose(); } catch { }
+            try { telemetryServer?.Dispose(); } catch { }
+
             SentryLogger.Dispose();
 
             if (Host?.Window != null)
@@ -1050,9 +1055,17 @@ namespace osu.Game
             };
         }
 
+        private Online.WebSockets.WebSocketBroadcastServer telemetryServer;
+        private Online.WebSockets.GameTelemetrySampler telemetrySampler;
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            telemetryServer = new Online.WebSockets.WebSocketBroadcastServer(this, "ws://127.0.0.1:7272");
+            telemetryServer.Start();
+
+            telemetrySampler = new Online.WebSockets.GameTelemetrySampler(this, telemetryServer);
+            telemetrySampler.Start();
 
             var languages = Enum.GetValues<Language>();
 

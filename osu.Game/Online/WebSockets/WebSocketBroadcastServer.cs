@@ -42,7 +42,7 @@ namespace osu.Game.Online.WebSockets
                     lock (gate) clients.Add(socket);
                     Logger.Log("WS: client connected", LoggingTarget.Network, Framework.Logging.LogLevel.Verbose, true);
                 };
-                socket.OnMessage = message =>
+                /* socket.OnMessage = message =>
                 {
                     switch (message)
                     {
@@ -54,7 +54,7 @@ namespace osu.Game.Online.WebSockets
                             break;
                     }
                     Logger.Log("WS: client message", LoggingTarget.Network, Framework.Logging.LogLevel.Verbose, true);
-                };
+                }; */
                 socket.OnClose = () =>
                 {
                     lock (gate) clients.Remove(socket);
